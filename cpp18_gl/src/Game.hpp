@@ -69,8 +69,8 @@ private:
 		void scale_add(glm::vec3 &&scale);
 		void scale_perform(void);
 		
-		void init_texture(unsigned int *texture) const;
-		int  set_texture(const char *const path) const;		
+		static void init_texture(unsigned int *texture);
+		static int  set_texture(const char *const path);		
 
 		unsigned int  get_model_mat_id(void) const;
 		unsigned int  get_vao(void) const;
@@ -216,6 +216,7 @@ private:
 		(char*)"../resources/textures/texture03_emission.png",
 		(char*)"../resources/textures/texture02.png",
 		(char*)"../resources/textures/texture02_specular.png",
+		(char*)"../resources/textures/texture04_solid_color.png"
 	};
 	static constexpr float deltatime_coef = 0.1f;
 
@@ -255,20 +256,35 @@ private:
 	unsigned int main_light_ambient_id;
 	unsigned int main_light_diffuse_id;
 	unsigned int main_light_specular_id;
+	unsigned int main_light_emission_id;
+
 	unsigned int main_light_position_id;
+	unsigned int main_light_direction_id;
+	unsigned int main_light_cut_off_id;
+	unsigned int main_light_out_cut_off_id;
+
+	unsigned int main_light_constant_id;
+	unsigned int main_light_linear_id;
+	unsigned int main_light_quadratic_id;
+	
+	unsigned int main_light_tex_id;
+	unsigned int main_light_tex[1];
 
 	unsigned int light_model_id;
 	unsigned int light_view_id;
 	unsigned int light_projection_id;
 	unsigned int light_color_id;
-
+	
 	float light_color[3];
 
+	glm::vec3 world_up;
 	glm::vec3 cam_pos;
 	glm::vec3 cam_front;
+	glm::vec3 cam_right;
 	glm::vec3 cam_up;
+	
 
-	glm::vec3 positions[4];
+	glm::vec3 positions[5];
 	glm::vec3 rotations[4];
 	glm::vec3 scales[4];
 

@@ -209,6 +209,15 @@ bool Game::Object::is_valid(void) const{
 	return (vbo && vao && ebo);
 }
 
+/*
+===============
+
+Game::Object::~get_model_mat_id(void)
+	returns Object's model_mat_id
+
+===============
+*/
+
 unsigned int Game::Object::get_model_mat_id(void) const {
 	return model_mat_id;
 }
@@ -265,6 +274,15 @@ unsigned int Game::Object::get_verticies_len(void) const {
 	return verticies_len;
 }
 
+/*
+===============
+
+Game::Object::get_model_mat(void)
+	returns Object::model_mat value
+
+===============
+*/
+
 glm::mat4 Game::Object::get_model_mat(void) const {
 	return model_mat;
 }
@@ -282,13 +300,40 @@ glm::vec3 Game::Object::get_position() const {
 	return position;
 }
 
+/*
+===============
+
+Game::Object::get_rotation_angle(void)
+	returns Object::rotation_angle value
+
+===============
+*/
+
 float Game::Object::get_rotation_angle() const {
 	return rotation_angle;
 }
 
+/*
+===============
+
+Game::Object::get_rotation(void)
+	returns Object::rotation value
+
+===============
+*/
+
 glm::vec3 Game::Object::get_rotation() const {
 	return rotation;
 }
+
+/*
+===============
+
+Game::Object::get_scale(void)
+	returns Object::scale value
+
+===============
+*/
 
 glm::vec3 Game::Object::get_scale() const {
 	return scale;
@@ -362,15 +407,54 @@ void Game::Object::cpy_indicies(unsigned int **new_indicies) const{
 	}
 }
 
+/*
+===============
+
+Game::Object::get_model_mat_ptr(...)
+	copies pointer to model_mat
+
+===============
+*/
+
 const glm::mat4 *const Game::Object::get_model_mat_ptr(void) const {
 	return &model_mat;
 }		
+
+/*
+===============
+
+Game::Object::get_position_ptr(...)
+	copies pointer to position
+
+===============
+*/
+
 const glm::vec3 *const Game::Object::get_position_ptr(void) const {
 	return &position;
 }	
+
+/*
+===============
+
+Game::Object::get_rotation_ptr(...)
+	copies pointer to allocated rotation
+
+===============
+*/
+
 const glm::vec3 *const Game::Object::get_rotation_ptr(void) const {
 	return &rotation;
 }	
+
+/*
+===============
+
+Game::Object::get_scale_ptr(...)
+	copies pointer to scale
+
+===============
+*/
+
 const glm::vec3 *const Game::Object::get_scale_ptr(void) const {
 	return &scale;
 }
@@ -588,19 +672,59 @@ void Game::Object::draw(void)
 	model_mat = glm::mat4(1.0f);
 }
 
+/*
+===============
+
+Game::Object::translate_add(...)
+	Adds parameter-position to this->position
+
+===============
+*/
+
 void Game::Object::translate_add(glm::vec3 *position)
 {
 	if (position) {
 		this->position += *position;
 	}
 }
+
+/*
+===============
+
+Game::Object::translate_add(...)
+	Adds parameter-position to this->position
+
+===============
+*/
+
 void Game::Object::translate_add(glm::vec3 &&position) {
 	this->position += position;
 }
+
+/*
+===============
+
+Game::Object::translate_perform(void)
+	Calculates translation to the model_mat
+
+===============
+*/
+
 void Game::Object::translate_perform(void)
 {
 	model_mat = glm::translate(model_mat, this->position);
 }
+
+/*
+===============
+
+Game::Object::rotate_add(...)
+	Adds parameter-rotation_angle
+	to this->rotation_angle, 
+	parameter-rotation to this->rotation
+
+===============
+*/
 
 void Game::Object::rotate_add(float angle, glm::vec3 *rotation)
 {
@@ -609,14 +733,45 @@ void Game::Object::rotate_add(float angle, glm::vec3 *rotation)
 		this->rotation       = *rotation;
 	}
 }
+
+/*
+===============
+
+Game::Object::rotate_add(...)
+	Adds parameter-rotation_angle
+	to this->rotation_angle, 
+	parameter-rotation to this->rotation
+
+===============
+*/
+
 void Game::Object::rotate_add(float angle, glm::vec3 &&rotation) {
 	this->rotation_angle += angle;
 	this->rotation       = rotation;
 }
+
+/*
+===============
+
+Game::Object::rotate_perform(...)
+	Calculates rotation to the model_mat
+
+===============
+*/
+
 void Game::Object::rotate_perform(void)
 {
 	model_mat = glm::rotate(model_mat, this->rotation_angle, this->rotation);
 }
+
+/*
+===============
+
+Game::Object::scale_add(...)
+	Adds parameter-scale to this->scale
+
+===============
+*/
 
 void Game::Object::scale_add(glm::vec3 *scale)
 {
@@ -624,9 +779,29 @@ void Game::Object::scale_add(glm::vec3 *scale)
 		this->scale = *scale;
 	}
 }
+
+/*
+===============
+
+Game::Object::scale_add(...)
+	Adds parameter-scale to this->scale
+
+===============
+*/
+
 void Game::Object::scale_add(glm::vec3 &&scale) {
 	this->scale = scale;
 }
+
+/*
+===============
+
+Game::Object::scale_perform(...)
+	Calculates scale to the model_mat
+
+===============
+*/
+
 void Game::Object::scale_perform(void)
 {
 	model_mat = glm::scale(model_mat, this->scale);
@@ -640,7 +815,7 @@ Game::Object::init_texture()
 ================
 */
 
-void Game::Object::init_texture(unsigned int *texture) const
+void Game::Object::init_texture(unsigned int *texture)
 {	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -656,7 +831,7 @@ Game::Object::set_texture()
 ================
 */
 
-int Game::Object::set_texture(const char *const path) const
+int Game::Object::set_texture(const char *const path)
 {
 	AVFormatContext   *ifmt_ctx    = nullptr;
 	AVCodecParameters *dec_par     = nullptr;
@@ -796,11 +971,6 @@ int Game::Object::set_texture(const char *const path) const
 }
 
 
-
-
-
-
-
 /*
 ================================
 
@@ -826,14 +996,17 @@ Game::Game(int win_width, int win_height)
 	  win_w_centered(win_width / 2.0f), 
 	  win_h_centered(win_height / 2.0f),
 	  light_color{1.0f, 1.0f, 1.0f},
+	  world_up(0.0f, 1.0f, 0.0f),
 	  cam_pos(0.0f, 0.0f, 5.0f),
 	  cam_front(0.0f, 0.0f, -1.0f),
-	  cam_up(0.0f, 1.0f, 0.0f),
+	  cam_right(glm::normalize(glm::cross(cam_front, world_up))),
+	  cam_up(glm::normalize(glm::cross(cam_right, cam_front))),
 	  positions{
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, -3.0f, 0.0f),
 		glm::vec3(-3.0f, -0.75f, 0.0f),
-		glm::vec3(0.0f, 1.5f, 0.0f)		
+		glm::vec3(0.0f, 1.5f, 0.0f),
+		glm::vec3(0.0f, -1.0f, 0.0f)//	direction_light
 	  },
 	  rotations {
 		glm::vec3(0.0f, 0.0f, 0.0f),
@@ -870,6 +1043,7 @@ Game::~Game()
 
 Game::~Game(void)
 {
+	glDeleteTextures(1, main_light_tex);
 	puts("Game::~Game(void)\n");
 	glDeleteBuffers(1, vbos);
 
@@ -916,16 +1090,8 @@ int Game::init(void)
 	        goto quit;
 	}
 
-	//
-	
-	//SDL_SetWindowMouseGrab(window, true);
-
 	SDL_SetWindowRelativeMouseMode(window, true);
 	SDL_WarpMouseInWindow(window, win_w_centered, win_h_centered);
-	//rect = {win_w / 2.0f, win_h / 2.0f, win_w, win_h};
-	//SDL_SetWindowMouseRect(window, nullptr);
-
-	//
 
 	gl_ctx = SDL_GL_CreateContext(window);
 	if (!gl_ctx) {
@@ -984,187 +1150,6 @@ int Game::init(void)
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-/*
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebos[0]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-		sizeof(unsigned int) * 18,
-		INDICIES, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-		8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-		8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,
-	        8 * sizeof(float), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	// VAO[1]
-
-	glBindVertexArray(vaos[1]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbos[0]);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebos[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-		sizeof(unsigned int) * 6,
-		&INDICIES[18], GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-	        8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-	        8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,
-	        8 * sizeof(float), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	// VAO[2]
-
-	glBindVertexArray(vaos[2]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbos[0]);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebos[2]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-	        sizeof(unsigned int) * 36,
-	        &INDICIES[24], GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-	        8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-	        8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	// Reset bind vao, vbo
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
-	// Textures
-	//
-
-	glGenTextures(8, textures);
-
-	// Texture00 - diffuse
-	//
-
-	init_texture(&textures[0]);
-
-	res = set_texture(TEXTURE_PATHS[0]);
-	if (res < 0) {
-		fprintf(stderr, "Failed to set_texture "
-			"(texture00).\n");
-		goto delete_textures;
-	}
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Texture01 - specular
-	//
-	init_texture(&textures[1]);
-
-	res = set_texture(TEXTURE_PATHS[1]);
-	if (res < 0) {
-	        fprintf(stderr, "Failed to set_texture "
-			"(texture01).\n");
-	        goto delete_textures;
-	}
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Texture02 - diffuse
-	//
-
-	init_texture(&textures[2]);
-
-	res = set_texture(TEXTURE_PATHS[2]);
-	if (res < 0) {
-		fprintf(stderr, "Failed to set_texture "
-			"(texture02).\n");
-		goto delete_textures;
-	}
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Texture03 - specular
-	//
-	init_texture(&textures[3]);
-
-	res = set_texture(TEXTURE_PATHS[3]);
-	if (res < 0) {
-	        fprintf(stderr, "Failed to set_texture "
-			"(texture03).\n");
-	        goto delete_textures;
-	}
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Texture04 - diffuse
-	//
-
-	init_texture(&textures[4]);
-
-	res = set_texture(TEXTURE_PATHS[4]);
-	if (res < 0) {
-		fprintf(stderr, "Failed to set_texture "
-			"(texture04).\n");
-		goto delete_textures;
-	}
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Texture05 - specular
-	//
-	init_texture(&textures[5]);
-
-	res = set_texture(TEXTURE_PATHS[5]);
-	if (res < 0) {
-	        fprintf(stderr, "Failed to set_texture "
-			"(texture05).\n");
-	        goto delete_textures;
-	}
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-	
-
-	// Texture06 - diffuse
-	//
-
-	init_texture(&textures[6]);
-
-	res = set_texture(TEXTURE_PATHS[6]);
-	if (res < 0) {
-		fprintf(stderr, "Failed to set_texture "
-			"(texture06).\n");
-		goto delete_textures;
-	}
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Texture07 - specular
-	//
-	init_texture(&textures[7]);
-
-	res = set_texture(TEXTURE_PATHS[7]);
-	if (res < 0) {
-	        fprintf(stderr, "Failed to set_texture "
-			"(texture07).\n");
-	        goto delete_textures;
-	}
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-*/
 	// Getting and passing uniforms
 	//
 
@@ -1174,11 +1159,22 @@ int Game::init(void)
 	main_mat_specular_id  = glGetUniformLocation(main_program, "mat.specular");
 	main_mat_emission_id  = glGetUniformLocation(main_program, "mat.emission");
 	main_mat_shininess_id = glGetUniformLocation(main_program, "mat.shininess");
-
-	main_light_position_id = glGetUniformLocation(main_program, "light.position");
+	
 	main_light_ambient_id  = glGetUniformLocation(main_program, "light.ambient");
 	main_light_diffuse_id  = glGetUniformLocation(main_program, "light.diffuse");
 	main_light_specular_id = glGetUniformLocation(main_program, "light.specular");	
+	main_light_emission_id = glGetUniformLocation(main_program, "light.emission");
+
+	main_light_position_id    = glGetUniformLocation(main_program, "light.position");
+	main_light_direction_id   = glGetUniformLocation(main_program, "light.direction");
+	main_light_cut_off_id     = glGetUniformLocation(main_program, "light.cutOff");
+	main_light_out_cut_off_id = glGetUniformLocation(main_program, "light.outCutOff");
+	
+	main_light_constant_id  = glGetUniformLocation(main_program, "light.constant");
+	main_light_linear_id    = glGetUniformLocation(main_program, "light.linear");
+	main_light_quadratic_id = glGetUniformLocation(main_program, "light.quadratic");
+
+	main_light_tex_id       = glGetUniformLocation(main_program, "light.tex");
 
 	glUseProgram(main_program);
 
@@ -1186,7 +1182,40 @@ int Game::init(void)
 	glUniform1i(main_mat_specular_id, 1);	
 	glUniform1i(main_mat_emission_id, 2);
 
+	glUniform1f(main_light_constant_id, 1.0f);
+	glUniform1f(main_light_linear_id, 0.09f);
+	glUniform1f(main_light_quadratic_id, 0.032f);
+
+	glUniform1i(main_light_tex_id, 3);
+
 	glUseProgram(0);
+
+	//	
+	main_light_tex[0] = 0;
+	puts("gen0");
+	glGenTextures(1, main_light_tex);
+	puts("gen1");
+	glBindTexture(GL_TEXTURE_2D, main_light_tex[0]);
+
+	puts("init");
+	Game::Object::init_texture(&main_light_tex[0]);
+	if (!main_light_tex[0]) {
+		fprintf(stderr, "Failed to init_texture.\n");
+		goto delete_vbos;
+	}
+
+	puts("set");
+	res = Game::Object::set_texture(TEXTURE_PATHS[9]);
+	if (res < 0) {
+		fprintf(stderr, "Failed to set_texture.\n");
+		goto delete_texture;
+	}
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	puts("done");
+	//
 
 
 	light_program_tex_id = glGetUniformLocation(light_program, "tex");
@@ -1221,57 +1250,41 @@ int Game::init(void)
 		&INDICIES[24], 36, true, &positions[2], &rotations[2], 45.0f, &scales[2], 16.0f);
 	objects[3] =  Object(light_model_id, vbos[0], TEXTURE_PATHS[7], TEXTURE_PATHS[8], nullptr,
 		&INDICIES[24], 36, true, &positions[3], &rotations[3], 0.0f, &scales[3], 16.0f);
-puts("objects created.");
-fflush(stdout);
+
 	res = objects[0].init();
 	if (res < 0) {
 		fprintf(stderr, "Failed to init objects[0].\n");
-		goto delete_vbos;
+		goto delete_texture;
 	}
 
 	res = objects[1].init();
 	if (res < 0) {
 		fprintf(stderr, "Failed to init objects[1].\n");
-		goto delete_vbos;
+		goto delete_texture;
 	}
 
 	res = objects[2].init();
 	if (res < 0) {
 		fprintf(stderr, "Failed to init objects[2].\n");
-		goto delete_vbos;
+		goto delete_texture;
 	}
 
 	res = objects[3].init();
 	if (res < 0) {
 		fprintf(stderr, "Failed to init objects[3].\n");
-		goto delete_vbos;
+		goto delete_texture;
 	}
-
-printf("* objects inited: %d\n", __LINE__);
-fflush(stdout);
 
 	// CLEANUP
 	// -------
 
-	puts("succes, SDL_Init()!");
-	fflush(stdout);
-
-	printf("objects[0].get_verticies_len(): %d.\n", objects[0].get_verticies_len());
-	fflush(stdout);
-
 	return 0;
 
-	/* delete_textures: */
-	//glDeleteTextures(8, textures);
+	delete_texture:
+	glDeleteTextures(1, main_light_tex);
 
 	delete_vbos:
 	glDeleteBuffers(1, vbos);
-
-	/* delete_ebos: */
-	//glDeleteBuffers(1, ebos);
-
-	/* delete_vaos: */
-	//glDeleteVertexArrays(1, vaos);
 
 	delete_light_program:
 	glDeleteProgram(light_program);
@@ -1304,7 +1317,6 @@ int Game::run_render_loop()
 	while (running) {
 		glm::mat4 view;
 	        glm::mat4 projection = glm::mat4(1.0f);
-		//glm::mat4 model      = glm::mat4(1.0f);
 		std::chrono::time_point cur_tp =
 			std::chrono::steady_clock::now();
 		deltatime = (float)
@@ -1334,7 +1346,7 @@ int Game::run_render_loop()
 
 		process_keyboard();
 
-		glClearColor(0.8f, 0.8f, 0.8f, 1.0f);//try white
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);//try white
 		glClear(GL_COLOR_BUFFER_BIT
 			| GL_DEPTH_BUFFER_BIT);
 
@@ -1359,117 +1371,67 @@ int Game::run_render_loop()
 		// Light
 		//
 
-		glUniform3fv(main_view_pos_id,
-			1, glm::value_ptr(cam_pos));
+		glUniform3fv(main_view_pos_id, 1, glm::value_ptr(cam_pos));
+		glUniform3fv(main_light_position_id, 1, glm::value_ptr(cam_pos));
+		glUniform3fv(main_light_direction_id, 1, glm::value_ptr(cam_front));	
+		glUniform1f(main_light_cut_off_id, glm::cos(glm::radians(12.5f)));
+		glUniform1f(main_light_out_cut_off_id, glm::cos(glm::radians(17.5f)));
 
-		glUniform3fv(main_light_position_id, 1, glm::value_ptr(*objects[3].get_position_ptr()));
-		glUniform3fv(main_light_ambient_id, 1, glm::value_ptr(glm::vec3(0.1f, 0.1f, 0.1f)));
-		glUniform3fv(main_light_diffuse_id, 1, glm::value_ptr(glm::vec3(0.5f, 0.5f, 0.5f)));
-		glUniform3fv(main_light_specular_id, 1, glm::value_ptr(glm::vec3(0.5f, 0.5f, 0.5f)));		
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, main_light_tex[0]);
 
 		// Moodel0: Pyramid
 		//
 
-		glUniform1f(main_mat_shininess_id, 16.0f);
-/*
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textures[0]);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, textures[1]);
-
-		glBindVertexArray(vaos[0]);
-*/		
+		glUniform3fv(main_light_ambient_id, 1, glm::value_ptr(glm::vec3(0.1f, 0.1f, 0.1f)));
+		glUniform3fv(main_light_diffuse_id, 1, glm::value_ptr(glm::vec3(0.8f, 0.8f, 0.8f)));
+		glUniform3fv(main_light_specular_id, 1, glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));	
+		glUniform3fv(main_light_emission_id, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 0.0f)));
+		glUniform1f(main_mat_shininess_id, 32.0f);
+	
 		if (objects[0].get_position_ptr()->x >= 3.0f || objects[0].get_position_ptr()->x < -3.0f) {
 			pyramid_move_coef *= -1;
 		}
-
-		//positions[0].x += pyramid_move_coef;
-
-		/*
-		model = glm::translate(model, positions[0]);
-		model = glm::rotate(model,
-			glm::radians(rotation),
-			glm::vec3(1.0f, 1.0f, 1.0f));
-			
-		rotation += 1.0f;			
-
-		glUniformMatrix4fv(main_model_id, 1, GL_FALSE,
-			glm::value_ptr(model));
-		*/
-
 		
 		objects[0].translate_add(glm::vec3(pyramid_move_coef, 0.0f, 0.0f));
 		objects[0].rotate_add(glm::radians(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-		//objects[0].scale_add();
 
 		objects[0].translate_perform();
 		objects[0].rotate_perform();
 		objects[0].scale_perform();
 
-		//glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
-//puts("draw0");
 		objects[0].draw();
 
 		// Model1: Plane
 		//
 
-		glUniform1f(main_mat_shininess_id, 16.0f);
-/*
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textures[2]);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, textures[3]);
-		glBindVertexArray(vaos[1]);
-*/
-
-		/*
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, positions[1]);
-		model = glm::scale(model,
-				glm::vec3(3.0f, 1.0f, 3.0f));		
-
-		glUniformMatrix4fv(main_model_id, 1, GL_FALSE,
-			glm::value_ptr(model));
-
-		*/
-
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	
-		//objects[1].translate_add();
-		//objects[1].rotate_add();
-		//objects[1].scale_add();
+		glUniform3fv(main_light_ambient_id, 1, glm::value_ptr(glm::vec3(0.1f, 0.1f, 0.1f)));
+		glUniform3fv(main_light_diffuse_id, 1, glm::value_ptr(glm::vec3(0.8f, 0.8f, 0.8f)));
+		glUniform3fv(main_light_specular_id, 1, glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));	
+		glUniform3fv(main_light_emission_id, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 0.0f)));
+		glUniform1f(main_mat_shininess_id, 32.0f);
 
 		objects[1].translate_perform();
 		objects[1].rotate_perform();
 		objects[1].scale_perform();
-//puts("draw1");
+
 		objects[1].draw();
 
 		// Model2: Cube(), LuckyBlock
-		//
+		//		
+		
+		glUniform3fv(main_light_ambient_id, 1, glm::value_ptr(glm::vec3(0.1f, 0.1f, 0.1f)));
+		glUniform3fv(main_light_diffuse_id, 1, glm::value_ptr(glm::vec3(0.8f, 0.8f, 0.8f)));
+		glUniform3fv(main_light_specular_id, 1, glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
+		glUniform3fv(main_light_emission_id, 1, glm::value_ptr(glm::vec3(0.5f, 0.5f, 0.5f)));
+		glUniform1f(main_mat_shininess_id, 32.0f);
 
-		glUniform1f(main_mat_shininess_id, 16.0f);
-
-		/*
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, positions[3]);
-
-		glUniformMatrix4fv(main_model_id, 1, GL_FALSE,
-			glm::value_ptr(model));
-		*/
-
-		//objects[2].translate_add();
-		objects[2].rotate_add(glm::radians(0.75f), glm::vec3(1.0f));
-		//objects[2].scale_add();
-
-		glUniform3fv(main_light_ambient_id, 1, glm::value_ptr(glm::vec3(0.05f, 0.005f, 0.05f)));
-		glUniform3fv(main_light_diffuse_id, 1, glm::value_ptr(glm::vec3(0.6f, 0.6f, 0.6f)));
-		glUniform3fv(main_light_specular_id, 1, glm::value_ptr(glm::vec3(0.7f, 0.7f, 0.7f)));
+		//objects[2].rotate_add(glm::radians(0.75f), glm::vec3(1.0f));
 
 		objects[2].translate_perform();
 		objects[2].rotate_perform();
 		objects[2].scale_perform();
-//puts("draw2");
+
 		objects[2].draw();
 
 		// Model3: Cube (light00)
@@ -1482,25 +1444,6 @@ int Game::run_render_loop()
 		glUniformMatrix4fv(light_projection_id, 1,
 			GL_FALSE, glm::value_ptr(projection));
 		glUniform3fv(light_color_id, 1, light_color);
-
-		//glBindTexture(GL_TEXTURE_2D, textures[4]);
-		//glBindVertexArray(vaos[2]);
-
-		/*
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, positions[2]);
-		model = glm::scale(model,
-				glm::vec3(0.5f, 0.5f, 0.5f));		
-
-		glUniformMatrix4fv(light_model_id, 1, GL_FALSE,
-			glm::value_ptr(model));
-		*/
-
-		//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	
-		//objects[3].translate_add();
-		//objects[3].rotate_add();
-		//objects[3].scale_add();
 
 		objects[3].translate_perform();
 		objects[3].rotate_perform();
@@ -1543,7 +1486,7 @@ unsigned int Game::create_program(const char *const vs_path,
 	unsigned int             shader_program = 0;
 	std::ifstream            shader_ifs;
 	std::ifstream::pos_type  shader_len     = 0;
-	char 			 info_log[128];
+	char 			 info_log[256];
 	int 			 res            = 0;
 
 	// Vertex shader source
@@ -1696,19 +1639,17 @@ void Game::process_keyboard()
 		 * cam_trans_speed * deltatime;
 	}
 	if (key_states[SDL_SCANCODE_A]) {
-		cam_pos -= glm::normalize(glm::cross(cam_front, cam_up))
-			* cam_trans_speed * deltatime;
+		cam_pos -= cam_right * cam_trans_speed * deltatime;
 	}
 	if (key_states[SDL_SCANCODE_D]) {
-		cam_pos += glm::normalize(glm::cross(cam_front, cam_up))
-			* cam_trans_speed * deltatime;
+		cam_pos += cam_right * cam_trans_speed * deltatime;
 	}
 
 	if (key_states[SDL_SCANCODE_SPACE]) {
-		cam_pos += glm::normalize(cam_up) * cam_trans_speed * deltatime;
+		cam_pos += world_up * cam_trans_speed * deltatime;
 	}
 	if (key_states[SDL_SCANCODE_LSHIFT]) {
-		cam_pos -= glm::normalize(cam_up) * cam_trans_speed * deltatime;
+		cam_pos -= world_up * cam_trans_speed * deltatime;
 	}
 
 	//	Model2: LuckyBlock
@@ -1777,4 +1718,9 @@ void Game::process_mouse_motion(void)
 	cam_front.y = std::sin(glm::radians(pitch));
 	cam_front.z = std::sin(glm::radians(yaw)) *
 		std::cos(glm::radians(pitch));
+
+	cam_front = glm::normalize(cam_front);
+
+	cam_right = glm::normalize(glm::cross(cam_front, world_up));
+	cam_up    = glm::normalize(glm::cross(cam_right, cam_front));
 }
